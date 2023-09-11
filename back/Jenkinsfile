@@ -12,13 +12,15 @@ pipeline {
     stages {
         stage('Chechout scm') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/DevOpsDemo.git']])                
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])                
             }
         }
         stage('Build Maven') {
             steps {
-                checkout scm
-                sh 'mvn clean package'
+                 dir('/var/jenkins_home/workspace/devops-test/back') {
+                        sh 'mvn clean package'
+
+                 }
             }
             post {
                 success {
