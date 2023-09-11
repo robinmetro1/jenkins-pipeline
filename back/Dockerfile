@@ -1,5 +1,5 @@
 FROM openjdk:17
 EXPOSE 8080
-ADD target/devops-demo.jar back/devops-demo.jar
-ENTRYPOINT ["java","-jar","/back/devops-demo.jar"]
+ADD target/devops-demo.jar devops-demo.jar
+ENTRYPOINT ["java","-jar","/devops-demo.jar"]
 CMD ["-start"]
