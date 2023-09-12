@@ -8,6 +8,7 @@ pipeline {
         DOCKER_TAG = "latest"
         DOCKER_REGISTRY = "your-docker-registry-url"
         DOCKER_CREDENTIALS_ID = 'dockerhub'
+        SONARQUBE_CREDENTIALS_ID = 'sonartoken'
     }
     stages {
         stage('Chechout scm') {
@@ -15,6 +16,17 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])                
             }
         }
+        stage('SonarQube analysis') {
+            environment{
+
+            }
+            steps{
+          withSonarQubeEnv(credentialsId: SONARQUBE_CREDENTIALS_ID, installationName: 'sonarserver') { // You can override the credential to be used
+          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+           }
+        }
+        }
+
         stage('Build Maven') {
             steps {
                  dir('/var/jenkins_home/workspace/devops-test/back') {
