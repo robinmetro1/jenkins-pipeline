@@ -19,17 +19,14 @@ pipeline {
         stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
-                 script {
-                    def scannerHome = tool 'sonarscanner' // Assuming you have a SonarQubeScanner tool configured in Jenkins
+                  withSonarQubeEnv(credentialsId: SONARQUBE_CREDENTIALS_ID, installationName: 'sonarserver')
+                   { // You can override the credential to be used
+                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.1.3006:sonar'
 
-                    withSonarQubeEnv('sonarserver') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
+                   }
            }
         }
-        
+        }
 
         stage('Build Maven') {
             steps {
@@ -94,5 +91,7 @@ pipeline {
             }
         }
     }
-
 }
+    
+
+
