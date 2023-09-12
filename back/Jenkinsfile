@@ -16,10 +16,14 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])                
             }
         }
-        stage('SonarQube analysis') {
+        stage('SonarQube analysis for spring app') {
             steps{
-          withSonarQubeEnv(credentialsId: SONARQUBE_CREDENTIALS_ID, installationName: 'sonarserver') { // You can override the credential to be used
-          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+               dir('/var/jenkins_home/workspace/devops-test/back') {
+                  withSonarQubeEnv(credentialsId: SONARQUBE_CREDENTIALS_ID, installationName: 'sonarserver')
+                   { // You can override the credential to be used
+                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+
+                   }
            }
         }
         }
