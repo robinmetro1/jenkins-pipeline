@@ -74,7 +74,8 @@ pipeline {
         
         stage('Deploy to k8s') {
             steps {
-                script{
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', serverUrl: '']]) {
+    // some block
 
                 echo "Running k8s........................"
                 sh 'kubectl get pods '
