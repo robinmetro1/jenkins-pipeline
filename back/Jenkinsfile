@@ -75,10 +75,10 @@ pipeline {
             steps{
                 script{
                     withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', serverUrl: '']]) {
-                   dir('back/k8s') {
+                   dir('back') {
                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
                    sh 'chmod u+x ./kubectl'  
-                   sh './kubectl apply -f /deployment-service.yaml'
+                   sh './kubectl apply -f k8s/deployment-service.yaml'
                    sh './kubectl get pods'
                     }
 
