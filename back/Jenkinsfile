@@ -77,7 +77,7 @@ pipeline {
                 script{
 
                 echo "Running k8s........................"
-                sh 'kubetl get pods '
+                sh 'kubectl get pods '
 
                 }
             }
