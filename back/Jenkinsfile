@@ -73,7 +73,7 @@ pipeline {
         
         stage('Deploy to Kubernetes') {
             steps {
-                withKubeConfig(credentialsId: 'kubeconfig') {
+withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', serverUrl: '']]) {
                     echo "Running kubectl commands..."
                     sh 'kubectl get pods'
                     // Add more kubectl commands for deployment if needed
