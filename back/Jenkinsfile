@@ -16,7 +16,7 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])                
             }
         }
-        stage('SonarQube analysis for spring app') {
+        /***stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
                 withSonarQubeEnv(credentialsId: 'sonartoken') {
@@ -24,7 +24,7 @@ pipeline {
                  }
            }
         }
-        }
+        }***/
 
         stage('Build Maven') {
             steps {
