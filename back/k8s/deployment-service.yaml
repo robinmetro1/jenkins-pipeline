@@ -36,5 +36,5 @@ spec:
   - protocol: "TCP"
     port: 9090 #the port that the service is running on in the cluster
     targetPort: 9090 #the port exposed by the service
-type: NodePort
+  type: NodePort
         
