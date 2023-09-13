@@ -19,11 +19,9 @@ pipeline {
         stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
-                  withSonarQubeEnv(credentialsId: SONARQUBE_CREDENTIALS_ID, installationName: 'sonarserver')
-                   { // You can override the credential to be used
-                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                withSonarQubeEnv(credentialsId: 'sonartoken') {
 
-                   }
+                 }
            }
         }
         }
@@ -50,7 +48,7 @@ pipeline {
                 script {
                      dir('/var/jenkins_home/workspace/devops-test/back') {
                     // Build your Docker image
-                    def dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", ".")
+                    def dockerImage = docker.build("${DOCKER_IMAGE}:$BUILD_ID", ".")
                     }
                 }
             }
@@ -61,7 +59,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
                        def dockerImage = docker.image(env.DOCKER_IMAGE)
-                        dockerImage.push(env.DOCKER_TAG)
+                        dockerImage.push($BUILD_ID)
                     }
                 }
             }
@@ -76,9 +74,10 @@ pipeline {
         
         stage('Deploy to k8s') {
             steps {
-                echo "Deploying..."
                 script{
+
                 echo "Running k8s........................"
+                sh 'kubetl get pods '
 
                 }
             }
