@@ -24,7 +24,7 @@ pipeline {
                  }
            }
         }
-        }***/
+        }
 
         stage('Build Maven') {
             steps {
@@ -69,7 +69,7 @@ pipeline {
                     }                
                 }
             }
-        }
+        }***/
         
         stage('Deploy to Kubernetes') {
             steps{
