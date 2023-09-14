@@ -9,7 +9,6 @@ COPY package*.json ./
 
 # Install project dependencies
 RUN npm install
-RUN npm audit fix
 
 # Copy the entire Angular app source code to the container
 COPY . .
@@ -24,7 +23,7 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80 for serving the Angular app
-EXPOSE 80
+#EXPOSE 80
 
 # Start Nginx to serve the Angular app
 CMD ["nginx", "-g", "daemon off;"]
