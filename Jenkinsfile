@@ -4,8 +4,21 @@ pipeline {
         maven 'maven-3.9.4' 
         nodejs 'nodejs'
     }
+    properties(
+    [
+        [$class: 'BuildDiscarderProperty', strategy:
+          [$class: 'LogRotator', artifactDaysToKeepStr: '14', artifactNumToKeepStr: '5', daysToKeepStr: '30', numToKeepStr: '60']],
+        pipelineTriggers(
+          [
+              pollSCM('* * * * *'),
+              cron('@daily'),
+          ]
+        )
+    ]
+     )
     environment {
-        DOCKER_IMAGE = "eyaea/devops-demo"
+        BACK_DOCKER_IMAGE = "eyaea/devops-back"
+        FRONT_DOCKER_IMAGE = "eyaea/devops-front"
         DOCKER_TAG = "latest"
         DOCKER_REGISTRY = "your-docker-registry-url"
         DOCKER_CREDENTIALS_ID = 'dockerhub'
@@ -17,11 +30,13 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Build node') {
+/***
+        stage('Build frontend app') {
             steps {
                 dir('front') {
                     sh 'npm install '
+                    sh 'npm run build --prod'
+
                 }
             }
             post {
@@ -33,7 +48,7 @@ pipeline {
                 }
             }
         }
-        /***stage('SonarQube analysis for spring app') {
+        stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
                 withSonarQubeEnv(credentialsId: 'sonartoken') {
@@ -41,7 +56,7 @@ pipeline {
                  }
            }
         }
-        }
+        }***/
 
         stage('Build Maven') {
             steps {
@@ -59,22 +74,25 @@ pipeline {
             }
         }
     
-        stage('Build Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 script {
                     dir('back') {
                         // Build your Docker image
-                        def dockerImage = docker.build("${DOCKER_IMAGE}:${BUILD_TAG}", ".")
+                        def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}:${BUILD_TAG}", "back")
+                        def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}:${BUILD_TAG}", "front")
+
                     }
+
                 }
             }
         }
-       
-        stage('Push Docker Image') {
+       /***
+        stage('Push Docker Images') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        def dockerImage = docker.image(env.DOCKER_IMAGE)
+                        def dockerImage = docker.image(env.BACK_DOCKER_IMAGE)
                         dockerImage.push("${BUILD_TAG}")
                     }
                 }
@@ -86,7 +104,7 @@ pipeline {
                     }                
                 }
             }
-        }***/
+        }
         
         stage('Deploy to Kubernetes') {
             steps{
@@ -104,7 +122,7 @@ pipeline {
             }
           
             
-        }
+        }**/
         
         stage('Test') {
             steps {
