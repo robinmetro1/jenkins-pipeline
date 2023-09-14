@@ -20,7 +20,6 @@ pipeline {
     environment {
         BACK_DOCKER_IMAGE = "eyaea/devops-back"
         FRONT_DOCKER_IMAGE = "eyaea/devops-front"
-        DOCKER_TAG = "latest"
         DOCKER_REGISTRY = "your-docker-registry-url"
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         SONARQUBE_CREDENTIALS_ID = 'sonartoken'
@@ -74,33 +73,32 @@ pipeline {
                 }
             }
         }
-    /***
+   
         stage('Build Docker Images') {
             steps {
                 script {
                     dir('back') {
                         // Build your Docker image
-                        def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}:${BUILD_TAG}", ".")
+                        def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}:${env.BUILD_ID}", ".")
 
                     }
                     dir('front') {
                         // Build your Docker image
-                        def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}:${BUILD_TAG}", ".")
+                        def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}:${env.BUILD_ID}", ".")
 
                     }
 
                 }
             }
         }
-       ***/
         stage('Push Docker Images') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
                         def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE)
-                        dockerImageBack.push("${BUILD_TAG}")
+                        dockerImageBack.push("${env.BUILD_ID}")
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
-                        dockerImageFront.push("${BUILD_TAG}")
+                        dockerImageFront.push("${env.BUILD_ID}")
                     }
                 }
             }
