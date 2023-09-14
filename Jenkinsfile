@@ -95,7 +95,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE:env.BUILD_ID)
+                        def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE).tag("${env.BUILD_ID}")
                         dockerImageBack.push("${env.BUILD_ID}")
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
                         dockerImageFront.push("${env.BUILD_ID}")
