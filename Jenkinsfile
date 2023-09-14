@@ -57,7 +57,7 @@ pipeline {
                  }
            }
         }
-        }
+        } ***/
 
         stage('Build Maven') {
             steps {
@@ -74,7 +74,7 @@ pipeline {
                 }
             }
         }
-   ***/
+  
         stage('Build Docker Images') {
             steps {
                 script {
