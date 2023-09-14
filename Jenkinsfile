@@ -80,8 +80,12 @@ pipeline {
                 script {
                     dir('back') {
                         // Build your Docker image
-                        def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}:${BUILD_TAG}", "back/")
-                        def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}:${BUILD_TAG}", "front/")
+                        def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}:${BUILD_TAG}", ".")
+
+                    }
+                    dir('front') {
+                        // Build your Docker image
+                        def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}:${BUILD_TAG}", ".")
 
                     }
 
