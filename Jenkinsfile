@@ -74,7 +74,7 @@ pipeline {
                 }
             }
         }
-    
+    /***
         stage('Build Docker Images') {
             steps {
                 script {
@@ -92,13 +92,15 @@ pipeline {
                 }
             }
         }
-       /***
+       ***/
         stage('Push Docker Images') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        def dockerImage = docker.image(env.BACK_DOCKER_IMAGE)
-                        dockerImage.push("${BUILD_TAG}")
+                        def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE)
+                        dockerImageBack.push("${BUILD_TAG}")
+                         def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
+                        dockerImageFront.push("${BUILD_TAG}")
                     }
                 }
             }

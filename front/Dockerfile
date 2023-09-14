@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:14 as builder
+FROM node:9 as builder
 
 # Set the working directory in the container
 WORKDIR /app
@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Install project dependencies
 RUN npm install
+RUN npm audit fix
 
 # Copy the entire Angular app source code to the container
 COPY . .
