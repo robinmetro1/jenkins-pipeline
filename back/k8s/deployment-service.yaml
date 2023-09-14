@@ -1,40 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app
+  name: devops-back
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: spring-boot-app
+      app: devops-back
   template:
     metadata:
       labels:
-        app: spring-boot-app
+        app: devops-back
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
-      - name: spring-boot-app
-        image: eyaea/devops-demo
+      - name: devops-back
+        image: eyaea/devops-back:97
+        imagePullPolicy: "IfNotPresent"
+
+
         resources:
           limits:
             memory: "128Mi"
-            cpu: "500m"
+            cpu: "250m"
         ports:
-        - containerPort: 9090  #the port that the container is running on in the cluster
-
-
+        - containerPort: 9090 #the port that the container is running on in the cluster
 ---
-
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-boot-app
+  name: devops-back-service
 spec:
   selector:
-    app: spring-boot-app
+    app: devops-back
+  type: LoadBalancer  
   ports:
-  - protocol: "TCP"
+  - protocol: TCP
     port: 9090 #the port that the service is running on in the cluster
     targetPort: 9090 #the port exposed by the service
-  type: NodePort
-        
+    nodePort: 30000
+
+
+
+
+
+
+
+
+
+
+
+
