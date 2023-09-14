@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'maven-3.9.4' 
+        node 'nodejs'
     }
     environment {
         DOCKER_IMAGE = "eyaea/devops-demo"
@@ -14,6 +15,22 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Build node') {
+            steps {
+                dir('front') {
+                    sh 'npm install '
+                }
+            }
+            post {
+                success {
+                    echo "Success: front build completed"
+                }
+                failure {
+                    echo "Failed: front build"
+                }
             }
         }
         /***stage('SonarQube analysis for spring app') {
