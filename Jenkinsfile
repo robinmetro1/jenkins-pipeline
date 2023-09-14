@@ -4,6 +4,7 @@ pipeline {
         maven 'maven-3.9.4' 
         nodejs 'nodejs'
     }
+    /***
     properties(
     [
         [$class: 'BuildDiscarderProperty', strategy:
@@ -15,7 +16,7 @@ pipeline {
           ]
         )
     ]
-     )
+     )***/
     environment {
         BACK_DOCKER_IMAGE = "eyaea/devops-back"
         FRONT_DOCKER_IMAGE = "eyaea/devops-front"
