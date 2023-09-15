@@ -28,10 +28,10 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                checkout scm
-            }
+checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])            }
         }
-/***
+        /***
+
         stage('Build frontend app') {
             steps {
                 dir('front') {
@@ -97,9 +97,9 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
                         def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE)
-                        dockerImageBack.push("${env.BUILD_ID}")
+                        dockerImageBack.push("${env.DOCKER_TAG}")
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
-                        dockerImageFront.push("${env.BUILD_ID}")
+                        dockerImageFront.push("${env.DOCKER_TAG}")
                     }
                 }
             }
@@ -111,15 +111,18 @@ pipeline {
                 }
             }
         }
-        /***
+        
         stage('Deploy to Kubernetes') {
             steps{
                 script{
                     withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', serverUrl: '']]) {
-                   dir('back') {
+                   dir('back/k8s') {
                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
                    sh 'chmod u+x ./kubectl'  
-                   sh './kubectl apply -f k8s/deployment-service.yaml'
+                   sh './kubectl apply -f mongo-configmap.yaml'
+                   sh './kubectl apply -f mongo-secret.yaml'
+                   sh './kubectl apply -f mongo.yaml'
+                   sh './kubectl apply -f deployment-service.yaml'
                    sh './kubectl get pods'
                     }
 
@@ -128,7 +131,7 @@ pipeline {
             }
           
             
-        }**/
+        }
         
         stage('Test') {
             steps {
