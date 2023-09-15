@@ -57,7 +57,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                  }
            }
         }
-        } ***/
+        } 
 
         stage('Build Maven') {
             steps {
@@ -111,7 +111,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                 }
             }
         }
-        
+        ***/
         stage('Deploy to Kubernetes') {
             steps{
                 script{
@@ -119,11 +119,11 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                    dir('back/k8s') {
                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
                    sh 'chmod u+x ./kubectl'  
+                   sh './kubectl get pods'
                    sh './kubectl apply -f mongo-configmap.yaml'
                    sh './kubectl apply -f mongo-secret.yaml'
                    sh './kubectl apply -f mongo.yaml'
                    sh './kubectl apply -f deployment-service.yaml'
-                   sh './kubectl get pods'
                     }
 
                 }
