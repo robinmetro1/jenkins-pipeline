@@ -31,7 +31,7 @@ pipeline {
 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])            }
         }
      
-
+    /***
         stage('Build frontend app') {
             steps {
                 dir('front') {
@@ -49,7 +49,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                 }
             }
         }
-        /***
+    
         stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
