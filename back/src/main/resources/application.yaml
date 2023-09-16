@@ -1,13 +1,12 @@
 spring:
-  application:
-    name: devops-back
   data:
     mongodb:
       host: '${MONGO_HOST}'
-      database: '${MONGO_DB}'
+      database: '${MONGO_INITDB_DATABASE:persons}'
+      #uri: 'mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:27017/${MONGO_INITDB_DATABASE}/${MONGO_INITDB_DATABASE}'
       port: 27017
-      username: '${MONGO_USERNAME}'
-      password: '${MONGO_PASSWORD}'
+      username: '${MONGO_INITDB_ROOT_USERNAME}'
+      password: '${MONGO_INITDB_ROOT_PASSWORD}'
   cloud:
     kubernetes:
       discovery:
@@ -24,11 +23,3 @@ spring:
         enabled: true
         mode: polling
         period: 1000
-management:
-  endpoint:
-    restart:
-      enabled: true
-    health:
-      enabled: true
-    info:
-      enabled: true

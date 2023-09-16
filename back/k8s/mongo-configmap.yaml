@@ -5,4 +5,4 @@ metadata:
 data:
    database_url: mongodb-service
    host: mongodb-service
-   database: admin
+   database: persons
