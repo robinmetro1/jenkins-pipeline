@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: mongodb-configmap
 data:
-  database_url: mongodb-service
+   database_url: mongodb-service
+   host: mongodb-service
+   database: admin
