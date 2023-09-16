@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       host: '${MONGO_HOST}'
-      database: '${MONGO_INITDB_DATABASE:persons}'
+      database: '${MONGO_INITDB_DATABASE:admin}'
       #uri: 'mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:27017/${MONGO_INITDB_DATABASE}/${MONGO_INITDB_DATABASE}'
       port: 27017
       username: '${MONGO_INITDB_ROOT_USERNAME}'
