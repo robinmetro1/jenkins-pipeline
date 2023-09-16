@@ -58,7 +58,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                  }
            }
         }
-        } **/
+        } 
 
         stage('Build Maven') {
             steps {
@@ -111,7 +111,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                     }                
                 }
             }
-        }
+        }**/
 
         stage('Deploy to Kubernetes') {
             steps{
