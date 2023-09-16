@@ -33,4 +33,8 @@ public class Person {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public String getId() {
+        return id;
+    }
 }

@@ -15,7 +15,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: devops-back
-        image: eyaea/devops-back:97
+        image: eyaea/devops-back
         imagePullPolicy: "IfNotPresent"
 
 
