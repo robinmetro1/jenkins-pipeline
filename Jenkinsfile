@@ -112,7 +112,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                     }                
                 }
             }
-        }**/
+        }
 
         stage('Deploy to Kubernetes') {
             steps{
@@ -127,7 +127,6 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                    sh './kubectl apply -f mongo.yaml'
                    sh './kubectl apply -f deployment-service.yaml'
                     }
-
                 }
                 }
             }
