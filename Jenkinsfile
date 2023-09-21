@@ -56,10 +56,10 @@ pipeline {
 
                 withSonarQubeEnv(credentialsId: 'sonartoken',installationName: 'sonarserver') {
                       echo '${env.SONAR_HOST_URL}'
-                            sh 'mvn clean package sonar:sonar'
+                            //sh 'mvn clean package sonar:sonar'
 
 
-                    sh 'mvn sonar:sonar'
+                    sh ' mvn sonar:sonar -Dsonar.host.url=localhost:9000 -Dsonar.login=aya -Dsonar.password=aya -Dsonar.projectName=first '
 
                  }
             }
