@@ -4,7 +4,6 @@ pipeline {
         maven 'maven-3.9.4' 
         nodejs 'nodejs'
     }
-    /***
     properties(
     [
         [$class: 'BuildDiscarderProperty', strategy:
@@ -16,7 +15,7 @@ pipeline {
           ]
         )
     ]
-     )***/
+     )
     environment {
         BACK_DOCKER_IMAGE = "eyaea/devops-back"
         FRONT_DOCKER_IMAGE = "eyaea/devops-front"
@@ -48,18 +47,19 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                     echo "Failed: front build"
                 }
             }
-        }
+        }**/
     
         stage('SonarQube analysis for spring app') {
             steps{
                dir('/var/jenkins_home/workspace/devops-test/back') {
                 withSonarQubeEnv(credentialsId: 'sonartoken') {
+                    sh 'mvn sonar:sonar'
 
                  }
            }
         }
-        } **/
-
+        } 
+/***
         stage('Build Maven') {
             steps {
                 dir('back') {
@@ -79,6 +79,9 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
         stage('Build Docker Images') {
             steps {
                 script {
+                      when {
+                branch 'main'
+            }
                     dir('back') {
                         // Build your Docker image
                         def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}", ".")
@@ -88,12 +91,14 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                         // Build your Docker image
                         def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}", ".")
 
-                    }**/
+                    }
 
                 }
             }
         }
+
         stage('Push Docker Images') {
+
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
@@ -101,7 +106,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                         dockerImageBack.push("${env.DOCKER_TAG}")
                         /**
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
-                        dockerImageFront.push("${env.DOCKER_TAG}")**/
+                        dockerImageFront.push("${env.DOCKER_TAG}")
                     }
                 }
             }
@@ -140,5 +145,5 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
                 // Add test steps here
             }
         }
-    }
+    }***/
 }
