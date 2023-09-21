@@ -59,7 +59,7 @@ pipeline {
                             //sh 'mvn clean package sonar:sonar'
 
 
-                    sh ' mvn sonar:sonar -Dsonar.host.url=localhost:9000 -Dsonar.login=aya -Dsonar.password=aya -Dsonar.projectName=first '
+                    sh ' mvn sonar:sonar $SCANNER_HOME/bin/sonarscanner -Dsonar.login=aya -Dsonar.password=aya -Dsonar.projectName=first '
 
                  }
             }
