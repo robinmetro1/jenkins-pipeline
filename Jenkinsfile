@@ -27,7 +27,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])            }
+       checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])            }
         }
      
     /***
@@ -59,7 +59,7 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
            }
         }
         } 
-/***
+    /***
         stage('Build Maven') {
             steps {
                 dir('back') {
@@ -146,4 +146,5 @@ checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs:
             }
         }
     }***/
+ }
 }
