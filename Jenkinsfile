@@ -52,7 +52,7 @@ pipeline {
         stage('SonarQube analysis for spring app') {
             steps{
                 withSonarQubeEnv(credentialsId: 'sonartoken') {
-                      echo ${env.SONAR_HOST_URL} 
+                      echo '${env.SONAR_HOST_URL}'
                             sh 'mvn clean package sonar:sonar'
 
 
