@@ -51,13 +51,16 @@ pipeline {
     
         stage('SonarQube analysis for spring app') {
             steps{
-               dir('/var/jenkins_home/workspace/devops-test/back') {
                 withSonarQubeEnv(credentialsId: 'sonartoken') {
+                      echo ${env.SONAR_HOST_URL} 
+                            sh 'mvn clean package sonar:sonar'
+
+
                     sh 'mvn sonar:sonar'
 
                  }
            }
-        }
+        
         } 
     /***
         stage('Build Maven') {
