@@ -58,16 +58,12 @@ pipeline {
                       echo '${env.SONAR_HOST_URL}'
                             //sh 'mvn clean package sonar:sonar'
                          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-
-
-                   // sh ' mvn sonar:sonar -Dsonar.login=aya -Dsonar.password=aya -Dsonar.projectName=first '
-
                  }
             }
            }
         
         } 
-    /***
+ 
         stage('Build Maven') {
             steps {
                 dir('back') {
@@ -99,7 +95,7 @@ pipeline {
                         // Build your Docker image
                         def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}", ".")
 
-                    }
+                    }**/
 
                 }
             }
@@ -114,7 +110,7 @@ pipeline {
                         dockerImageBack.push("${env.DOCKER_TAG}")
                         /**
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
-                        dockerImageFront.push("${env.DOCKER_TAG}")
+                        dockerImageFront.push("${env.DOCKER_TAG}")**/
                     }
                 }
             }
@@ -153,6 +149,6 @@ pipeline {
                 // Add test steps here
             }
         }
-    }***/
+    }
  }
-}
+
