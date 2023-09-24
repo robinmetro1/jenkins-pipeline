@@ -91,9 +91,6 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                      when {
-                branch 'main'
-            }
                     dir('back') {
                         // Build your Docker image
                         def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}", ".")
