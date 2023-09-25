@@ -111,7 +111,9 @@ pipeline {
         }
 
         stage('Push Docker Images') {
-
+           when {
+                branch 'main'
+            }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
@@ -133,6 +135,9 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+            when {
+                branch 'main'
+            }
             steps{
                 script{
                     withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kubeconfig', namespace: '', serverUrl: '']]) {
