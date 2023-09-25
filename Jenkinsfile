@@ -28,7 +28,26 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-       checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']])            }
+
+checkout(
+    [
+        $class: 'GitSCM',
+        branches: [
+            [
+                name: '*/main'
+            ]
+        ],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [],
+        submoduleCfg: [],
+        userRemoteConfigs: [
+            [
+                url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
+            ]
+        ]
+    ]
+)
+              }
         }
      
     /***
