@@ -55,7 +55,7 @@ pipeline {
                    dir('back') {
 
                 withSonarQubeEnv(credentialsId: 'sonartoken',installationName: 'sonarserver') {
-                      echo '${env.SONAR_HOST_URL}'
+                      echo "${env.SONAR_HOST_URL}"
                             //sh 'mvn clean package sonar:sonar'
                          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                  }
@@ -64,13 +64,16 @@ pipeline {
         
         } 
       
-        stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
+    stage("Quality Gate") {
+     steps {
+            script {
+             def qg = waitForQualityGate()
+                if (qg.status != 'OK') {
+                    error("Quality Gate did not pass. Aborting the pipeline.")
+               }
             }
-          }
+     }
+       }
  
         stage('Build Maven') {
             steps {
