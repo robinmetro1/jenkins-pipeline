@@ -72,7 +72,7 @@ pipeline {
                     error("Quality Gate did not pass. Aborting the pipeline.")
                }
             }
-     }
+           }
        }
  
         stage('Build Maven') {
