@@ -75,6 +75,8 @@ pipeline {
         stage('Build Maven') {
             steps {
                 dir('back') {
+                        def currentBranch = env.BRANCH_NAME
+                         echo "Current branch is: ${currentBranch}"
                     sh 'mvn clean package'
                 }
             }
@@ -112,7 +114,7 @@ pipeline {
 
         stage('Push Docker Images') {
            when {
-                branch 'main'
+        expression { currentBuild.branch == 'main' }
             }
             steps {
                 script {
@@ -136,7 +138,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             when {
-                branch 'main'
+        expression { currentBuild.branch == 'main' }
             }
             steps{
                 script{
