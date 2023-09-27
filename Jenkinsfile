@@ -28,39 +28,35 @@ pipeline {
 
     }
     stages {
+       
         stage('Checkout SCM') {
-            steps {
+    steps {
+        script {
+            def branchName = 'main' // Default branch name
+            def branch = env.BRANCH_NAME ?: 'main' // Use default if BRANCH_NAME is not set
 
-checkout(
-    [
-        $class: 'GitSCM',
-        branches: [
-            [
-                name: '*/main'
-            ],
-            [
-                name: 'develop'
-            ]
-        ],
-        doGenerateSubmoduleConfigurations: false,
-        extensions: [],
-        submoduleCfg: [],
-        userRemoteConfigs: [
-            [
-                url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
-            ]
-        ]
-    ]
-)
-script{
-          MY_BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-          echo "Current branch is: ${MY_BRANCH_NAME}"
+            // Define the branch name based on the Jenkins environment
+            if (branch == 'origin/main') {
+                branchName = 'main'
+            } else if (branch == 'origin/develop') {
+                branchName = 'develop'
+            }
 
+            echo "Checking out branch: ${branchName}"
+
+            // Perform the Git checkout based on the resolved branch name
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: branchName]],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [],
+                submoduleCfg: [],
+                userRemoteConfigs: [[url: 'https://github.com/robinmetro1/jenkins-pipeline.git']]
+            ])
+        }
+    }
 }
 
-                        
-              }
-        }
      
     /***
         stage('Build frontend app') {
