@@ -50,8 +50,9 @@ checkout(
         ]
     ]
 )
-                        def currentBranch = env.BRANCH_NAME
-                         echo "Current branch is: ${currentBranch}"
+        echo "Current branch is: ${env.BRANCH_NAME}"
+
+                        
               }
         }
      
