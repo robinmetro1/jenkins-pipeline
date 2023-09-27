@@ -26,31 +26,35 @@ pipeline {
         SONARQUBE_CREDENTIALS_ID = 'sonartoken'
     }
     stages {
-stage('Checkout SCM') {
-    steps {
-        checkout([
-            $class: 'GitSCM',
-            branches: [
-                [
-                    name: '*/main'
-                ],
-                [
-                    name: 'develop'
-                ]
-            ],
-            doGenerateSubmoduleConfigurations: false,
-            extensions: [],
-            submoduleCfg: [],
-            userRemoteConfigs: [
-                [
-                    url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
-                ]
-            ]
-        ])
-        echo "Current branch is: ${env.BRANCH_NAME}"
-    }
-}
+        stage('Checkout SCM') {
+            steps {
 
+checkout(
+    [
+        $class: 'GitSCM',
+        branches: [
+            [
+                name: '*/main'
+            ],
+            [
+                name: 'develop'
+            ]
+        ],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [],
+        submoduleCfg: [],
+        userRemoteConfigs: [
+            [
+                url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
+            ]
+        ]
+    ]
+)
+                        def currentBranch = env.BRANCH_NAME
+                         echo "Current branch is: ${currentBranch}"
+              }
+        }
+     
     /***
         stage('Build frontend app') {
             steps {
