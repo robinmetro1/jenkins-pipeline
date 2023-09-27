@@ -125,8 +125,7 @@ checkout(
             }
             steps {
                 script {
-                        def currentBranch = env.BRANCH_NAME
-                         echo "Current branch is: ${currentBranch}"
+                        
                     dir('back') {
                         // Build your Docker image
                         def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}", ".")
