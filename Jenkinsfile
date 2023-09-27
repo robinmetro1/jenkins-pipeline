@@ -139,7 +139,7 @@ checkout(
                     }**/
 
                 }
-            }é 
+            }
         }
 
         stage('Push Docker Images') {
