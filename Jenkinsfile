@@ -26,30 +26,31 @@ pipeline {
         SONARQUBE_CREDENTIALS_ID = 'sonartoken'
     }
     stages {
-        stage('Checkout SCM') {
-            steps {
+stage('Checkout SCM') {
+    steps {
+        checkout([
+            $class: 'GitSCM',
+            branches: [
+                [
+                    name: '*/main'
+                ],
+                [
+                    name: 'develop'
+                ]
+            ],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [
+                [
+                    url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
+                ]
+            ]
+        ])
+        echo "Current branch is: ${env.BRANCH_NAME}"
+    }
+}
 
-checkout(
-    [
-        $class: 'GitSCM',
-        branches: [
-            [
-                name: '*/main'
-            ]
-        ],
-        doGenerateSubmoduleConfigurations: false,
-        extensions: [],
-        submoduleCfg: [],
-        userRemoteConfigs: [
-            [
-                url: 'https://github.com/robinmetro1/jenkins-pipeline.git'
-            ]
-        ]
-    ]
-)
-              }
-        }
-     
     /***
         stage('Build frontend app') {
             steps {
@@ -70,6 +71,9 @@ checkout(
         }**/
     
         stage('SonarQube analysis for spring app') {
+            when {
+    expression { currentBuild.branch == 'main' || currentBuild.branch == 'develop' }
+}
             steps{
                    dir('back') {
 
@@ -92,6 +96,9 @@ checkout(
           }**/
  
         stage('Build Maven') {
+            when {
+    expression { currentBuild.branch == 'main' || currentBuild.branch == 'develop' }
+}
             steps {
                 dir('back') {
 
@@ -109,7 +116,9 @@ checkout(
         }
   
         stage('Build Docker Images') {
-
+           when {
+        expression { currentBuild.branch == 'main' }
+            }
             steps {
                 script {
                         def currentBranch = env.BRANCH_NAME
@@ -126,7 +135,7 @@ checkout(
                     }**/
 
                 }
-            }
+            }é 
         }
 
         stage('Push Docker Images') {
