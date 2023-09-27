@@ -24,7 +24,7 @@ pipeline {
         DOCKER_TAG = "latest"
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         SONARQUBE_CREDENTIALS_ID = 'sonartoken'
-         MY_BRANCH_NAME = ''
+         branchName = 'main' // Default branch name
 
     }
     stages {
@@ -32,7 +32,6 @@ pipeline {
         stage('Checkout SCM') {
     steps {
         script {
-            def branchName = 'main' // Default branch name
             def branch = env.BRANCH_NAME ?: 'main' // Use default if BRANCH_NAME is not set
 
             // Define the branch name based on the Jenkins environment
@@ -79,7 +78,7 @@ pipeline {
     
         stage('SonarQube analysis for spring app') {
             when {
-    expression { currentBuild.branch == 'main' || currentBuild.branch == 'develop' }
+    expression {branchName== 'main' || branchName == 'develop' }
 }
             steps{
                    dir('back') {
