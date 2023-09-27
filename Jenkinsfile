@@ -103,7 +103,7 @@ pipeline {
  
         stage('Build Maven') {
             when {
-    expression { currentBuild.branch == 'main' || currentBuild.branch == 'develop' }
+    expression {branchName== 'main' || branchName == 'develop' }
 }
             steps {
                 dir('back') {
@@ -123,7 +123,7 @@ pipeline {
   
         stage('Build Docker Images') {
            when {
-        expression { currentBuild.branch == 'main' }
+    expression {branchName== 'main' }
             }
             steps {
                 script {
@@ -145,7 +145,7 @@ pipeline {
 
         stage('Push Docker Images') {
            when {
-        expression { currentBuild.branch == 'main' }
+        expression { branchName == 'main' }
             }
             steps {
                 script {
@@ -169,7 +169,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             when {
-        expression { currentBuild.branch == 'main' }
+        expression { branchName == 'main' }
             }
             steps{
                 script{
