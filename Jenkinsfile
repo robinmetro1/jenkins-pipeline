@@ -132,12 +132,12 @@ pipeline {
                         // Build your Docker image
                         def dockerImageBack = docker.build("${BACK_DOCKER_IMAGE}", ".")
 
-                    }
+                    }/**
                     dir('front') {
                         // Build your Docker image
                         def dockerImageFront = docker.build("${FRONT_DOCKER_IMAGE}", ".")
 
-                    }
+                    }**/
 
                 }
             }
@@ -152,9 +152,9 @@ pipeline {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
                         def dockerImageBack = docker.image(env.BACK_DOCKER_IMAGE)
                         dockerImageBack.push("${env.DOCKER_TAG}")
-                        
+                        /**
                          def dockerImageFront = docker.image(env.FRONT_DOCKER_IMAGE)
-                        dockerImageFront.push("${env.DOCKER_TAG}")
+                        dockerImageFront.push("${env.DOCKER_TAG}")**/
                     }
                 }
             }
