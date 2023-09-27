@@ -24,6 +24,8 @@ pipeline {
         DOCKER_TAG = "latest"
         DOCKER_CREDENTIALS_ID = 'dockerhub'
         SONARQUBE_CREDENTIALS_ID = 'sonartoken'
+         MY_BRANCH_NAME = ''
+
     }
     stages {
         stage('Checkout SCM') {
@@ -50,7 +52,11 @@ checkout(
         ]
     ]
 )
-        echo "Current branch is: ${env.BRANCH_NAME}"
+script{
+          MY_BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+          echo "Current branch is: ${MY_BRANCH_NAME}"
+
+}
 
                         
               }
